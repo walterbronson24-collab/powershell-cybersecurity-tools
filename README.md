@@ -1,32 +1,37 @@
-PowerShell System Audit Tool
+# PowerShell System Audit Tool
 
-Overview
+## Overview
 
-This project contains a PowerShell script that gathers basic system information from a Windows machine. It was created as part of my cybersecurity studies and PowerShell practice.
+The **PowerShell System Audit Tool** is a script designed to collect basic system information from a Windows machine. This project was created as part of my cybersecurity studies to practice PowerShell scripting and learn Windows system enumeration techniques.
 
-Features:
-Lists local users
+## Features
 
-Displays running processes
+* Lists local users and groups
+* Displays running processes
+* Shows installed services
+* Collects network configuration information
+* Gathers system details and environment information
+* Demonstrates basic Windows enumeration techniques
 
-Shows installed services
+## Technologies Used
 
-Collects network information
+* PowerShell
+* Windows 10/11
 
-Demonstrates basic Windows enumeration techniques
+## Purpose
 
-Technologies Used
+The goal of this project is to strengthen my PowerShell skills while learning how system administrators and cybersecurity professionals gather information about Windows environments for security analysis and troubleshooting.
 
-PowerShell
+## Usage
 
-Windows 10/11
+Run the script in PowerShell:
 
-Purpose:
+```powershell
+.\audit.ps1
+```
 
-The goal of this project is to practice PowerShell scripting and learn how system administrators and cybersecurity professionals gather information about Windows systems.
+## Author
 
-Author:
-
-Walter Lee Bronson
-
+**Walter Lee Bronson**
 Cybersecurity Student at Christopher Newport University
+
