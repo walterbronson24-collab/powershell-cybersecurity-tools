@@ -1,3 +1,19 @@
+"""
+Python TCP Port Scanner
+
+Description:
+    A simple TCP port scanner that identifies open ports
+    on a target host.
+
+Author:
+    Walter Lee Bronson
+
+Purpose:
+    Created to practice Python socket programming,
+    networking concepts, and cybersecurity reconnaissance.
+"""
+
+
 import socket
 import time
 
