@@ -1,0 +1,200 @@
+<#
+.SYNOPSIS
+    PowerShell System Audit Tool
+
+.DESCRIPTION
+    Collects basic Windows system information for security auditing,
+    system administration, and cybersecurity practice.
+
+.AUTHOR
+    Walter Lee Bronson
+
+.VERSION
+    1.0
+#>
+
+
+# Create timestamped audit report
+$StartTime = Get-Date
+$ReportName = "AuditReport_$($StartTime.ToString('yyyy-MM-dd_HH-mm')).txt"
+
+Start-Transcript -Path ".\$ReportName"
+
+
+Write-Host "================================="
+Write-Host "      PowerShell System Audit"
+Write-Host "================================="
+Write-Host "Audit Started: $StartTime"
+Write-Host ""
+
+
+# ================================
+# Computer Information
+# ================================
+
+Write-Host "=== Computer Information ==="
+
+# Displays the computer hostname
+Write-Host "Computer Name:"
+$env:COMPUTERNAME
+
+# Displays the currently logged-in user
+Write-Host "`nUsername:"
+$env:USERNAME
+
+
+# Collects detailed Windows system information
+Write-Host "`nComputer Details:"
+Get-ComputerInfo
+
+
+# ================================
+# Running Processes
+# ================================
+
+Write-Host "`n=== Top Running Processes ==="
+
+# Displays the top 20 processes using the most CPU resources
+Get-Process |
+Sort-Object CPU -Descending |
+Select-Object -First 20 Name, Id, CPU, WorkingSet
+
+
+
+# ================================
+# Local User Enumeration
+# ================================
+
+Write-Host "`n=== Local Users ==="
+
+# Lists local accounts and their status
+Get-LocalUser |
+Select-Object Name, Enabled, LastLogon
+
+
+
+# ================================
+# Network Information
+# ================================
+
+Write-Host "`n=== Network Adapters ==="
+
+# Displays network adapter and IP configuration
+Get-NetIPConfiguration
+
+
+
+# ================================
+# Operating System Information
+# ================================
+
+Write-Host "`n=== Operating System Information ==="
+
+# Retrieves Windows version and boot information
+Get-CimInstance Win32_OperatingSystem |
+Select-Object Caption, Version, BuildNumber, LastBootUpTime
+
+
+
+# ================================
+# Active Network Connections
+# ================================
+
+Write-Host "`n=== Established Network Connections ==="
+
+# Shows active TCP connections
+Get-NetTCPConnection |
+Where-Object {$_.State -eq "Established"} |
+Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, State
+
+
+
+# ================================
+# Administrator Accounts
+# ================================
+
+Write-Host "`n=== Administrator Accounts ==="
+
+# Shows accounts with administrator privileges
+Get-LocalGroupMember Administrators
+
+
+
+# ================================
+# Services
+# ================================
+
+Write-Host "`n=== Stopped Services ==="
+
+# Displays services that are currently stopped
+Get-Service |
+Where-Object {$_.Status -eq "Stopped"} |
+Select-Object Name, DisplayName, Status
+
+
+
+# ================================
+# Disk Information
+# ================================
+
+Write-Host "`n=== Disk Usage ==="
+
+# Displays storage usage information
+Get-Volume |
+Select-Object DriveLetter, FileSystemLabel, SizeRemaining, Size
+
+
+
+# ================================
+# Windows Defender Status
+# ================================
+
+Write-Host "`n=== Windows Defender Status ==="
+
+# Checks antivirus and real-time protection status
+Get-MpComputerStatus |
+Select-Object AntivirusEnabled,
+              RealTimeProtectionEnabled,
+              AntivirusSignatureLastUpdated
+
+
+
+# ================================
+# Installed Updates
+# ================================
+
+Write-Host "`n=== Recent Installed Updates ==="
+
+# Displays the most recent Windows updates
+Get-Hotfix |
+Sort-Object InstalledOn -Descending |
+Select-Object -First 10
+
+
+
+# ================================
+# Firewall Status
+# ================================
+
+Write-Host "`n=== Firewall Profiles ==="
+
+# Checks whether Windows firewall profiles are enabled
+Get-NetFirewallProfile |
+Select-Object Name, Enabled
+
+
+
+# ================================
+# Completion
+# ================================
+
+$EndTime = Get-Date
+
+Write-Host "`n================================="
+Write-Host "Audit Completed"
+Write-Host "Finished: $EndTime"
+Write-Host "Duration: $($EndTime - $StartTime)"
+Write-Host "================================="
+
+
+Stop-Transcript
